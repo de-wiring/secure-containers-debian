@@ -1,3 +1,5 @@
 *.box
 *.vmdk
 *.iso
+builds
+packer_cache
