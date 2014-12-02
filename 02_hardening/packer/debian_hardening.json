@@ -1,0 +1,36 @@
+{
+  "variables": {
+    "chef_version": "latest"
+  },
+  "builders": [
+    {
+      "type": "virtualbox-ovf",
+      "source_path": "../../builds/debian-7.7_virtualbox/box.ovf",
+      "ssh_username": "vagrant",
+      "ssh_password": "vagrant",
+      "ssh_wait_timeout": "30s",
+      "shutdown_command": "echo 'packer' | sudo -S shutdown -h -P now",
+      "vm_name": "dewiring-hardened-debian-7.7-amd64",
+      "output_directory": "dewiring-hardened-debian-7.7-amd64-virtualbox",
+      "vboxmanage": [
+        [ "modifyvm", "{{.Name}}", "--memory", "512" ],
+        [ "modifyvm", "{{.Name}}", "--cpus", "1" ]
+      ]
+    }
+  ],
+  "post-processors": [
+    {
+      "type": "vagrant",
+      "output": "../../builds/{{.Provider}}/debian_hardenend-debian-7.7_chef-{{user `chef_version`}}.box"
+    }
+  ],
+  "provisioners": [
+    {
+      "execute_command": "echo 'vagrant' | {{.Vars}} sudo -E -S bash '{{.Path}}'",
+      "scripts": [
+        "scripts/021_run_chef_os_hardening.sh"
+      ],
+      "type": "shell"
+    }
+  ]
+}
