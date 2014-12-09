@@ -1,7 +1,7 @@
 require 'spec_helper.rb'
 
 describe 'Base image should exist' do
-	describe file '../builds/virtualbox/debian_debian-7.7_chef-latest.box' do
+	describe file '../builds/virtualbox/dewiring_debian-7.7.box' do
 		it { should be_file }
 	end
 

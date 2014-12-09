@@ -1,6 +1,6 @@
 {
   "variables": {
-    "chef_version": "latest"
+    "chef_version": "11.4.0"
   },
   "builders": [
     {
@@ -21,7 +21,7 @@
   "post-processors": [
     {
       "type": "vagrant",
-      "output": "../../builds/{{.Provider}}/debian_hardenend-debian-7.7_chef-{{user `chef_version`}}.box"
+      "output": "../../builds/{{.Provider}}/debian_hardenend-debian-7.7.box"
     }
   ],
   "provisioners": [
