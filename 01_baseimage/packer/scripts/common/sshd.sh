@@ -1,4 +1,9 @@
-#!/bin/bash -eux
+#!/bin/sh
 
-echo "UseDNS no" >> /etc/ssh/sshd_config
-echo "GSSAPIAuthentication no" >> /etc/ssh/sshd_config
+set -e
+set -x
+
+sudo tee -a /etc/ssh/sshd_config <<EOF
+
+UseDNS no
+EOF

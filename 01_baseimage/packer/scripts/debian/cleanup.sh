@@ -1,6 +1,7 @@
-#!/bin/bash -eux
+#!/bin/bash
 
-apt-get -y autoremove
-apt-get -y clean
-rm -rf VBoxGuestAdditions_*.iso VBoxGuestAdditions_*.iso.?
-rm -f /tmp/chef*deb
+set -e
+set -x
+
+sudo aptitude -y clean
+sudo rm /etc/discover-pkginstall.conf

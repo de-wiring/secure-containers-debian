@@ -1,0 +1,70 @@
+{
+  "variables": {
+    "compression_level": 6,
+    "cpus": "1",
+    "disk_size": 10240,
+    "headless": false,
+    "memory": "512",
+    "chef_version": "12.0.3",
+    "mirror": "http://cdimage.debian.org/debian-cd"
+  },
+  "builders": [{
+    "type": "virtualbox-iso",
+    "guest_os_type": "Debian_64",
+    "iso_url": "{{user `mirror`}}/7.8.0/amd64/iso-cd/debian-7.8.0-amd64-netinst.iso",
+    "iso_checksum": "e39c36d6adc0fd86c6edb0e03e22919086c883b37ca194d063b8e3e8f6ff6a3a",
+    "iso_checksum_type": "sha256",
+    "output_directory": "output-debian-7.8.0-amd64-virtualbox",
+    "vm_name": "dewiring-debian-7.8.0-amd64-virtualbox",
+    "disk_size": "{{user `disk_size`}}",
+    "headless": "{{user `headless`}}",
+    "http_directory": "http",
+    "boot_wait": "5s",
+    "boot_command": [
+      "<esc><wait>",
+      "auto ",
+      "preseed/url=http://{{.HTTPIP}}:{{.HTTPPort}}/debian-7.8.0/preseed.cfg ",
+      "debian-installer=en_US ",
+      "auto ",
+      "locale=de_DE ",
+      "kbd-chooser/method=de ",
+      "keyboard-configuration/xkb-keymap=de ",
+      "netcfg/get_hostname={{ .Name }} ",
+      "netcfg/get_domain=de-wiring.net ",
+      "fb=false ",
+      "debconf/frontend=noninteractive ",
+      "console-setup/ask_detect=false ",
+      "console-keymaps-at/keymap=de ",
+      "<enter>"
+    ],
+    "ssh_wait_timeout": "60m",
+    "ssh_username": "vagrant",
+    "ssh_password": "vagrant",
+    "shutdown_command": "sudo poweroff",
+    "vboxmanage": [
+      ["modifyvm", "{{.Name}}", "--memory", "{{user `memory`}}"],
+      ["modifyvm", "{{.Name}}", "--cpus", "{{user `cpus`}}"]
+    ]
+  }],
+  "provisioners": [
+   {
+    "type": "shell",
+    "execute_command": "echo 'vagrant' | {{.Vars}} sudo -E -S bash '{{.Path}}'",
+    "scripts": [
+      "scripts/debian/init.sh",
+      "scripts/common/sshd.sh",
+      "scripts/debian/virtualbox.sh",
+      "scripts/common/vagrant.sh",
+      "scripts/common/grub_cgroup_enable.sh",
+      "scripts/common/chef.sh",
+      "scripts/debian/cleanup.sh",
+      "scripts/common/minimize.sh"
+    ]
+   }
+  ],
+  "post-processors": [{
+    "type": "vagrant",
+    "compression_level": "{{user `compression_level`}}",
+    "output": "dewiring-debian-7.8.0-amd64-virtualbox.box"
+  }]
+}
