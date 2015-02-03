@@ -39,7 +39,7 @@
     ],
     "ssh_wait_timeout": "60m",
     "ssh_username": "vagrant",
-    "ssh_password": "vagrant",
+    "ssh_password": "af9xodKpH_jDNhuty8moAyZkDawfqjGPsjKWGdTTSi8r48RU",
     "shutdown_command": "sudo poweroff",
     "vboxmanage": [
       ["modifyvm", "{{.Name}}", "--memory", "{{user `memory`}}"],
@@ -50,12 +50,16 @@
    {
     "type": "shell",
     "execute_command": "echo 'vagrant' | {{.Vars}} sudo -E -S bash '{{.Path}}'",
+    "environment_vars": [
+      "CHEF_VERSION={{user `chef_version`}}"
+    ],
     "scripts": [
       "scripts/debian/init.sh",
       "scripts/common/sshd.sh",
       "scripts/debian/virtualbox.sh",
       "scripts/common/vagrant.sh",
       "scripts/common/grub_cgroup_enable.sh",
+      "scripts/debian/backport_kernel316.sh",
       "scripts/common/chef.sh",
       "scripts/debian/cleanup.sh",
       "scripts/common/minimize.sh"
@@ -65,6 +69,6 @@
   "post-processors": [{
     "type": "vagrant",
     "compression_level": "{{user `compression_level`}}",
-    "output": "dewiring-debian-7.8.0-amd64-virtualbox.box"
+    "output": "../../builds/dewiring-debian-7.8.0-amd64-virtualbox.box"
   }]
 }

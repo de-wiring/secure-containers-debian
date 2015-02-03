@@ -6,7 +6,8 @@ apt-get install -y git=1:1.7.10.4-1+wheezy1
 cd /root
 mkdir os-hardening
 cd os-hardening/
-git clone --branch v1.1.2 https://github.com/TelekomLabs/chef-os-hardening
+#git clone --branch v1.1.2 https://github.com/TelekomLabs/chef-os-hardening
+git clone --branch v1.2.0 https://github.com/TelekomLabs/chef-os-hardening
 
 mkdir cookbooks
 mv chef-os-hardening cookbooks/os-hardening
